@@ -1,15 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortType } from '../redux/slices/filterSlice';
+
+export const sortList = [
+	{ title: 'popularity', sortProperty: 'rating' },
+	{ title: 'price', sortProperty: 'price' },
+	{ title: 'alphabetically', sortProperty: 'title' },
+];
 
 function Sort() {
 	const [isVisible, setIsVisible] = useState(false);
-	const [sortCategory, setSortCategory] = useState('popularity');
+	const { sortType } = useSelector((state) => state.filters);
+	const dispatch = useDispatch();
 
-	const onSetSortCategory = (e) => {
-		setSortCategory(e.target.innerText);
+	const sortRef = useRef();
+
+	useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (!e.composedPath().includes(sortRef.current)) {
+				setIsVisible(false);
+			}
+		};
+		document.body.addEventListener('click', handleClickOutside);
+
+		return () => document.body.removeEventListener('click', handleClickOutside);
+	}, []);
+
+	const onSetSortCategory = (obj) => {
+		dispatch(setSortType(obj));
 		setIsVisible(false);
 	};
 	return (
-		<div className="sort">
+		<div ref={sortRef} className="sort">
 			<div
 				onClick={() => setIsVisible(!isVisible)}
 				className={isVisible ? 'sort__label sort__label_visible' : 'sort__label'}>
@@ -25,24 +47,19 @@ function Sort() {
 					/>
 				</svg>
 				<b>Sort by:</b>
-				<span>{sortCategory}</span>
+				<span>{sortType.title}</span>
 			</div>
 			{isVisible && (
 				<div className="sort__popup">
 					<ul>
-						<li
-							onClick={onSetSortCategory}
-							className={sortCategory === 'popularity' ? 'active' : ''}>
-							popularity
-						</li>
-						<li onClick={onSetSortCategory} className={sortCategory === 'price' ? 'active' : ''}>
-							price
-						</li>
-						<li
-							onClick={onSetSortCategory}
-							className={sortCategory === 'alphabetically' ? 'active' : ''}>
-							alphabetically
-						</li>
+						{sortList.map((obj, i) => (
+							<li
+								key={i}
+								onClick={() => onSetSortCategory(obj)}
+								className={sortType.sortProperty === obj.sortProperty ? 'active' : ''}>
+								{obj.title}
+							</li>
+						))}
 					</ul>
 				</div>
 			)}
