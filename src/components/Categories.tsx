@@ -1,6 +1,11 @@
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
 
-function Categories({ activeCategory, setActiveCategory }) {
+type CategoriesProps = {
+	activeCategory: string;
+	setActiveCategory: (name: string) => void;
+}
+
+const Categories: React.FC<CategoriesProps>  = ({ activeCategory, setActiveCategory }) => {
 	const categories = ['All', 'Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed'];
 
 	return (
@@ -8,8 +13,8 @@ function Categories({ activeCategory, setActiveCategory }) {
 			<ul>
 				{categories.map((category) => (
 					<li
-						key={uuidv4()}
-						onClick={(e) => setActiveCategory(e.target.innerText)}
+						key={crypto.randomUUID()}
+						onClick={(e) => setActiveCategory((e.target as HTMLElement).innerText)}
 						className={activeCategory === category ? 'active' : ''}>
 						{category}
 					</li>

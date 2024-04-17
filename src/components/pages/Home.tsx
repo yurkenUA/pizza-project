@@ -1,20 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 
-import Categories from '../Categories';
-import PizzaBlock from '../PizzaBlock/';
-import Sort, { sortList } from '../Sort';
-import Skeleton from '../PizzaBlock/Skeleton';
-import NotFoundBlock from '../NotFoundBlock';
-import Pagination from '../Pagination';
+import Categories from '../Categories.tsx';
+import PizzaBlock from '../PizzaBlock/index.tsx';
+import Sort, { sortList } from '../Sort.tsx';
+import Skeleton from '../PizzaBlock/Skeleton.tsx';
+import NotFoundBlock from '../NotFoundBlock/index.tsx';
+import Pagination from '../Pagination/index.tsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryName, setFilters } from '../../redux/slices/filterSlice';
+import { setCategoryName, setFilters } from '../../redux/slices/filterSlice.js';
 import qs from 'qs';
 import { useNavigate } from 'react-router';
-import { fetchPizzas } from '../../redux/slices/pizzasSlice';
+import { fetchPizzas } from '../../redux/slices/pizzasSlice.js';
 
-function Home() {
+const Home: React.FC = () => {
 	const { categoryName, sortType, currentPage, searchValue } = useSelector(
-		(state) => state.filters,
+		(state: any) => state.filters,
 	);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -22,10 +22,12 @@ function Home() {
 	const isSearch = useRef(false);
 	const isMounted = useRef(false);
 
-	const { pizzas, status } = useSelector((state) => state.pizzas);
+	const { pizzas, status } = useSelector((state: any) => state.pizzas);
 
 	const getPizzas = () => {
-		dispatch(fetchPizzas({ categoryName, sortType, searchValue, currentPage }));
+		dispatch(
+		//@ts-ignore
+		fetchPizzas({ categoryName, sortType, searchValue, currentPage }));
 	};
 
 	useEffect(() => {
@@ -62,12 +64,12 @@ function Home() {
 	const visiblePizzas = pizzas
 		? pizzas
 				// .filter((pizzaObj) => pizzaObj.title.toLowerCase().includes(searchValue.toLowerCase()))
-				.map((pizzaObj) => <PizzaBlock key={pizzaObj.id} {...pizzaObj} />)
+				.map((pizzaObj: any) => <PizzaBlock key={pizzaObj.id} {...pizzaObj} />)
 		: null;
 
 	const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />);
 
-	const setActiveCategory = (name) => {
+	const setActiveCategory = (name: string) => {
 		dispatch(setCategoryName(name));
 	};
 	return (

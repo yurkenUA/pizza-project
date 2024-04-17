@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import logo from '../assets/img/pizza-logo.svg';
-import Search from './Search';
+import Search from './Search/index.tsx';
 import { setClearFilters } from '../redux/slices/filterSlice';
 import { selectCart } from '../redux/slices/cartSlice';
 

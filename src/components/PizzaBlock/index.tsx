@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
 import { Link } from 'react-router-dom';
 
-function PizzaBlock({ id, imageUrl, title, price, types, sizes }) {
+type PizzaBlockProps = {
+	id: string;
+	imageUrl: string;
+	title: string;
+	price: number;
+	types: number[];
+	sizes: number[];
+}
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, types, sizes }) => {
 	const cartItem = useSelector(selectCartItemById(id));
 	const [activeType, setActiveType] = useState(0);
 	const [activeSize, setActiveSize] = useState(0);
@@ -35,7 +43,7 @@ function PizzaBlock({ id, imageUrl, title, price, types, sizes }) {
 				<ul>
 					{types.map((type, i) => (
 						<li
-							key={uuidv4()}
+							key={crypto.randomUUID()}
 							className={activeType === i ? 'active' : ''}
 							onClick={() => setActiveType(i)}>
 							{type === 1 ? 'regular' : 'thin'}
@@ -45,7 +53,7 @@ function PizzaBlock({ id, imageUrl, title, price, types, sizes }) {
 				<ul>
 					{sizes.map((size, i) => (
 						<li
-							key={uuidv4()}
+							key={crypto.randomUUID()}
 							className={activeSize === i ? 'active' : ''}
 							onClick={() => setActiveSize(i)}>
 							{size} ''
