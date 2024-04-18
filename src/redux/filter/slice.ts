@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FilterSliceState, ISortType } from './types';
 
-const initialState = {
+const initialState: FilterSliceState = {
 	searchValue: '',
 	categoryName: 'All',
 	currentPage: 1,
@@ -14,34 +15,34 @@ const filterSlice = createSlice({
 	name: 'filter',
 	initialState,
 	reducers: {
-		setCategoryName: (state, action) => {
+		setCategoryName: (state, action: PayloadAction<string>) => {
 			state.categoryName = action.payload;
 		},
-		setSearchValue: (state, action) => {
+		setSearchValue: (state, action: PayloadAction<string>) => {
 			state.searchValue = action.payload;
 		},
-		setSortType: (state, action) => {
+		setSortType: (state, action: PayloadAction<ISortType>) => {
 			state.sortType = action.payload;
 		},
-		setCurrentPage: (state, action) => {
+		setCurrentPage: (state, action: PayloadAction<number>) => {
 			state.currentPage = action.payload;
 		},
-		setFilters: (state, action) => {
-			state.categoryName = action.payload.categoryName;
+		setFilters: (state, action: PayloadAction<FilterSliceState>) => {
+ 			state.categoryName = action.payload.categoryName;
 			state.currentPage = action.payload.currentPage;
 			state.sortType = action.payload.sortType;
 		},
 		setClearFilters: (state) => (state = initialState),
 	},
 });
-
+ 
 export const {
 	setCategoryName,
 	setSortType,
 	setCurrentPage,
 	setFilters,
 	setClearFilters,
-	setSearchValue,
+	setSearchValue, 
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

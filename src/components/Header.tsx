@@ -1,19 +1,34 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import logo from '../assets/img/pizza-logo.svg';
 import Search from './Search/index.tsx';
-import { setClearFilters } from '../redux/slices/filterSlice';
-import { selectCart } from '../redux/slices/cartSlice';
+import { selectCart } from '../redux/cart/selectors.ts';
+import { useEffect, useRef } from 'react';
+import { setClearFilters } from '../redux/filter/slice.ts';
 
 function Header() {
+	const location = useLocation();
 	const dispatch = useDispatch();
-	const { totalPrice, totalCount } = useSelector(selectCart);
+	const {items, totalPrice, totalCount } = useSelector(selectCart);
+	const isMounted = useRef(false);
+
+	useEffect(() => {
+		if (isMounted.current) {
+			const json = JSON.stringify(items);
+			localStorage.setItem("cart", json);
+		}
+		isMounted.current = true;
+	}, [items])
+
+	const onLogoClick = () => {
+		dispatch(setClearFilters());
+	}
 
 	return (
 		<div className="header">
 			<div className="container">
-				<Link onClick={() => dispatch(setClearFilters())} to={'/'}>
+				<Link onClick={onLogoClick} to={'/'}>
 					<div className="header__logo">
 						<img width="38" src={logo} alt="Pizza logo" />
 						<div>
@@ -22,8 +37,9 @@ function Header() {
 						</div>
 					</div>
 				</Link>
-				<Search />
+				{location.pathname !== '/cart' && <Search />}
 				<div className="header__cart">
+					
 					<NavLink to="/cart" className="button button--cart">
 						<span>{totalPrice} $</span>
 						<div className="button__delimiter"></div>

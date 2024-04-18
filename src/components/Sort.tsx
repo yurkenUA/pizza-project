@@ -1,21 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSortType } from '../redux/slices/filterSlice';
+import { ISortType } from '../redux/filter/types';
+import { setSortType } from '../redux/filter/slice';
 
-type SortItem = {
-	title: string;
-	sortProperty: string;
-};
+// type SortItem = {
+// 	title: string;
+// 	sortProperty: string;
+// };
 
-export const sortList: SortItem[] = [
+export const sortList: ISortType[] = [
 	{ title: 'popularity', sortProperty: 'rating' },
 	{ title: 'price', sortProperty: 'price' },
 	{ title: 'alphabetically', sortProperty: 'title' },
 ];
 
-function Sort() {
+const Sort: React.FC  = React.memo(() => {
 	const [isVisible, setIsVisible] = useState(false);
-	const sortType: SortItem = useSelector((state: any) => state.filters.sortType);
+	const sortType: ISortType = useSelector((state: any) => state.filters.sortType);
 	const dispatch = useDispatch();
 
 	const sortRef = useRef<HTMLDivElement>(null);
@@ -31,7 +32,7 @@ function Sort() {
 		return () => document.body.removeEventListener('click', handleClickOutside);
 	}, []);
 
-	const onSetSortCategory = (obj: SortItem) => {
+	const onSetSortCategory = (obj: ISortType) => {
 		dispatch(setSortType(obj));
 		setIsVisible(false);
 	};
@@ -70,6 +71,6 @@ function Sort() {
 			)}
 		</div>
 	);
-}
+}) 
 
 export default Sort;

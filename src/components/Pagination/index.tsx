@@ -2,8 +2,8 @@ import ReactPaginate from 'react-paginate';
 
 import style from './Pagination.module.scss';
 import { useDispatch } from 'react-redux';
-import { setCurrentPage } from '../../redux/slices/filterSlice';
 import React from 'react';
+import { setCurrentPage } from '../../redux/filter/slice';
 
 const  Pagination: React.FC<{currentPage: number}> = ({ currentPage }) => {
 	const dispatch = useDispatch();
