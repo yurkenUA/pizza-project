@@ -18,8 +18,8 @@ const  Pagination: React.FC<{currentPage: number}> = ({ currentPage }) => {
 				breakLabel="..."
 				nextLabel=">"
 				onPageChange={(e) => handlePageClick(e.selected + 1)}
-				pageRangeDisplayed={5}
-				pageCount={5}
+				pageRangeDisplayed={3}
+				pageCount={3}
 				forcePage={currentPage - 1}
 				previousLabel="<"
 				renderOnZeroPageCount={null}
